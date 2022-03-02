@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = "Chas-Plugins"
+rootProject.name = "ChasOnRS"
 
 include(":autovorki")
 

@@ -36,7 +36,7 @@ subprojects {
     group = "com.openosrs.externals"
 
     project.extra["PluginProvider"] = "ChasOnRS"
-    project.extra["ProjectSupportUrl"] = "https://discord.gg/9fGzEDR"
+    project.extra["ProjectSupportUrl"] = ""
     project.extra["PluginLicense"] = "3-Clause BSD License"
 
     repositories {
@@ -108,11 +108,7 @@ subprojects {
             doLast {
                 copy {
                     from("./build/libs/")
-                    into("C:/Users/Tom/.openosrs/plugins/")
-                }
-				copy {
-                    from("./build/libs/")
-                    into("M:/OpenOSRS/chas-plugins/release/")
+                    into("../release/")
                 }
             }
         }
