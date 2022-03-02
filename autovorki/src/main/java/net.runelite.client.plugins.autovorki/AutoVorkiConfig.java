@@ -153,6 +153,11 @@ public interface AutoVorkiConfig extends Config {
         return "ruby bolt,diamond bolt,emerald bolt,dragonstone bolt";
     }
 
+    @ConfigItem(keyName = "invokes", name = "Use invokes (use with caution)", description = "Use at your own risk :)", position = 998)
+    default boolean invokes() {
+        return false;
+    }
+
     @ConfigItem(keyName = "debug", name = "Debug Messages", description = "", position = 999)
     default boolean debug() {
         return false;

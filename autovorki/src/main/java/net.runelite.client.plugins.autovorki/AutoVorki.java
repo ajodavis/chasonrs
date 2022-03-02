@@ -324,7 +324,10 @@ public class AutoVorki extends Plugin {
             if (config.useStaff() && inv.containsItem(config.staffID()))
                 actionItem(config.staffID(), MenuAction.ITEM_SECOND_OPTION);
             startLoc = new LocalPoint(vorkath.getLocalLocation().getX(), vorkath.getLocalLocation().getY() - (4 * 128));
-            walk.sceneWalk(startLoc, 0, 0);
+            if (config.invokes())
+                walk.walkTile(startLoc.getSceneX(), startLoc.getSceneY());
+            else
+                walk.sceneWalk(startLoc, 0, 0);
             killSpawn = true;
         }
     }
@@ -448,7 +451,10 @@ public class AutoVorki extends Plugin {
                     break;
                 case EQUIP_BGS:
                     targetMenu = new LegacyMenuEntry("Wield", "", 9, MenuAction.CC_OP_LOW_PRIORITY, 0, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId(), false);
-                    utils.doActionMsTime(targetMenu, inv.getWidgetItem(ItemID.BANDOS_GODSWORD).getCanvasBounds(), 0);
+                    if (!config.invokes())
+                        utils.doActionMsTime(targetMenu, inv.getWidgetItem(ItemID.BANDOS_GODSWORD).getCanvasBounds(), 0);
+                    else
+                        utils.doInvokeMsTime(targetMenu, 0);
                     timeout = 2;
                     deposited = false;
                     break;
@@ -566,7 +572,10 @@ public class AutoVorki extends Plugin {
                         actionItem(ItemID.BANDOS_GODSWORD, MenuAction.ITEM_SECOND_OPTION);
                     else {
                         targetMenu = new LegacyMenuEntry("<col=ff9040>Special Attack</col>", "", 1, MenuAction.CC_OP.getId(), -1, 38862884, false);
-                        utils.doActionMsTime(targetMenu, bounds.getBounds(), calc.getRandomIntBetweenRange(25, 200));
+                        if (!config.invokes())
+                            utils.doActionMsTime(targetMenu, bounds.getBounds(), calc.getRandomIntBetweenRange(25, 200));
+                        else
+                            utils.doInvokeMsTime(targetMenu, 0);
                         actionNPC(NpcID.VORKATH_8061, MenuAction.NPC_SECOND_OPTION); // 8061
                     }
                     break;
@@ -594,18 +603,21 @@ public class AutoVorki extends Plugin {
                                     steps = 0;
                                     break;
                                 }
-                                /*if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.eatAt())
-                                    eatFood();
-                                if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.restoreAt())
-                                    drinkPrayer();
-                                else if (config.drinkAntifire() && needsAntifire())
-                                    drinkAntifire();
-                                else if (config.drinkAntivenom() && needsAntivenom())
-                                    drinkAntivenom();
-                                else if (needsRepot())
-                                    drinkSuperCombat();*/
-                                walk.sceneWalk(new LocalPoint(safeX * 128, startLoc.getY() - 128), 0, 0);
-                                //walk.walkTile(safeX, startLoc.getSceneY() - 1);
+                                if (config.invokes()) {
+                                    if (client.getBoostedSkillLevel(Skill.HITPOINTS) <= config.eatAt())
+                                        eatFood();
+                                    if (client.getBoostedSkillLevel(Skill.PRAYER) <= config.restoreAt())
+                                        drinkPrayer();
+                                    else if (config.drinkAntifire() && needsAntifire())
+                                        drinkAntifire();
+                                    else if (config.drinkAntivenom() && needsAntivenom())
+                                        drinkAntivenom();
+                                    else if (needsRepot())
+                                        drinkSuperCombat();
+                                    walk.walkTile(safeX, startLoc.getSceneY() - 1);
+                                } else {
+                                    walk.sceneWalk(new LocalPoint(safeX * 128, startLoc.getY() - 128), 0, 0);
+                                }
                             }
                         }
                     }
@@ -627,10 +639,15 @@ public class AutoVorki extends Plugin {
                         utils.sendGameMessage("dodging bomb");
                     assert localLoc != null;
                     if (localLoc.getX() < 6208) {
-                        //walk.walkTile(localLoc.getSceneX() + 2, localLoc.getSceneY());
-                        walk.sceneWalk(new LocalPoint(localLoc.getX() + 256, localLoc.getY()), 0, 0);
+                        if (config.invokes())
+                            walk.walkTile(localLoc.getSceneX() + 2, localLoc.getSceneY());
+                        else
+                            walk.sceneWalk(new LocalPoint(localLoc.getX() + 256, localLoc.getY()), 0, 0);
                     } else {
-                        walk.sceneWalk(new LocalPoint(localLoc.getX() - 256, localLoc.getY()), 0, 0);
+                        if (config.invokes())
+                            walk.walkTile(localLoc.getSceneX() - 2, localLoc.getSceneY());
+                        else
+                            walk.sceneWalk(new LocalPoint(localLoc.getX() - 256, localLoc.getY()), 0, 0);
                     }
                     attack = true;
                     dodgeBomb = false;
@@ -756,7 +773,10 @@ public class AutoVorki extends Plugin {
             targetMenu = new LegacyMenuEntry("Continue", "", 0, MenuAction.WIDGET_TYPE_6, -1, client.getWidget(217, 5).getId(), false);
             bounds = client.getWidget(217, 5).getBounds();
         }
-        utils.doActionMsTime(targetMenu, bounds, 0);
+        if (!config.invokes())
+            utils.doActionMsTime(targetMenu, bounds, 0);
+        else
+            utils.doInvokeMsTime(targetMenu, 0);
     }
 
     AutoVorkiState getState() {
@@ -1039,7 +1059,10 @@ public class AutoVorki extends Plugin {
     private void walkToStart() {
         if (vorkath != null)
             startLoc = new LocalPoint(vorkath.getLocalLocation().getX(), vorkath.getLocalLocation().getY() - (4 * 128));
-        walk.sceneWalk(new LocalPoint(startLoc.getX(), startLoc.getY()), 0, 0);
+        if (!config.invokes())
+            walk.sceneWalk(new LocalPoint(startLoc.getX(), startLoc.getY()), 0, 0);
+        else
+            walk.walkTile(startLoc.getSceneX(), startLoc.getSceneY());
     }
 
     private void withdrawItem(int id, int qty) {
@@ -1124,7 +1147,10 @@ public class AutoVorki extends Plugin {
         GameObject obj = objectUtils.findNearestGameObject(id);
         if (obj != null) {
             targetMenu = new LegacyMenuEntry("", "", obj.getId(), action, obj.getSceneMinLocation().getX(), obj.getSceneMinLocation().getY(), false);
-            utils.doGameObjectActionMsTime(obj, action.getId(), calc.getRandomIntBetweenRange(25, 300));
+            if (!config.invokes())
+                utils.doGameObjectActionMsTime(obj, action.getId(), calc.getRandomIntBetweenRange(25, 300));
+            else
+                utils.doInvokeMsTime(targetMenu, 0);
             return true;
         }
         return false;
@@ -1133,8 +1159,11 @@ public class AutoVorki extends Plugin {
     private boolean actionItem(int id, MenuAction action, int delay) {
         if (inv.containsItem(id)) {
             WidgetItem item = inv.getWidgetItem(id);
-            LegacyMenuEntry menu = new LegacyMenuEntry("", "", item.getId(), action, item.getIndex(), WidgetInfo.INVENTORY.getId(), false);
-            utils.doActionMsTime(menu, item.getCanvasBounds(), delay);
+            targetMenu = new LegacyMenuEntry("", "", item.getId(), action, item.getIndex(), WidgetInfo.INVENTORY.getId(), false);
+            if (!config.invokes())
+                utils.doActionMsTime(targetMenu, item.getCanvasBounds(), delay);
+            else
+                utils.doInvokeMsTime(targetMenu, 0);
             return true;
         }
         return false;
@@ -1147,8 +1176,11 @@ public class AutoVorki extends Plugin {
     private boolean actionNPC(int id, MenuAction action, int delay) {
         NPC target = npcs.findNearestNpc(id);
         if (target != null) {
-            LegacyMenuEntry menu = new LegacyMenuEntry("", "", target.getIndex(), action, target.getIndex(), 0, false);
-            utils.doNpcActionMsTime(target, action.getId(), delay);
+            targetMenu = new LegacyMenuEntry("", "", target.getIndex(), action, target.getIndex(), 0, false);
+            if (!config.invokes())
+                utils.doNpcActionMsTime(target, action.getId(), delay);
+            else
+                utils.doInvokeMsTime(targetMenu, 0);
             return true;
         }
         return false;
