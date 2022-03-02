@@ -26,6 +26,8 @@
 rootProject.name = "ChasOnRS"
 
 include(":autovorki")
+include(":autocontinue")
+include(":autooffer")
 
 for (project in rootProject.children) {
     project.apply {
