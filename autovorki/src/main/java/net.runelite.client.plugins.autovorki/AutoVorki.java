@@ -1188,6 +1188,6 @@ public class AutoVorki extends Plugin {
     }
 
     private boolean actionNPC(int id, MenuAction action) {
-        return actionNPC(id, action, 300);
+        return actionNPC(id, action, 150);
     }
 }
