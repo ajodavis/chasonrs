@@ -118,12 +118,17 @@ public interface AutoVorkiConfig extends Config {
         return MoonClanTele.PORTAL_NEXUS;
     }
 
-    @ConfigItem(keyName = "superCombatID", name = "Boost", description = "The name of your super combat pot", position = 17)
+    @ConfigItem(keyName = "cMoonClanTele", name = "Object ID", description = "Object ID for custom Moonclan Teleport", position = 17)
+    default int cMoonClanTele() {
+        return 0;
+    }
+
+    @ConfigItem(keyName = "superCombatID", name = "Boost", description = "The name of your super combat pot", position = 18)
     default SuperCombat superCombat() {
         return SuperCombat.DIVINE_SUPER_COMBAT;
     }
 
-    @ConfigItem(keyName = "boostLevel", name = "Re-boost at", description = "The level to drink a super combat pot at", position = 18)
+    @ConfigItem(keyName = "boostLevel", name = "Re-boost at", description = "The level to drink a super combat pot at", position = 19)
     default int boostLevel() {
         return 10;
     }
@@ -258,7 +263,8 @@ public interface AutoVorkiConfig extends Config {
 
     enum MoonClanTele {
         PORTAL_NEXUS(ObjectID.PORTAL_NEXUS_33402),
-        MOONCLAN_PORTAL(29339);
+        MOONCLAN_PORTAL(29339),
+        CUSTOM(-1);
 
         @Getter
         private final int objectID;

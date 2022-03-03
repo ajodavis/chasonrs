@@ -518,7 +518,10 @@ public class AutoVorki extends Plugin {
                     timeout = 5;
                     break;
                 case TELEPORT_TO_MOONCLAN:
-                    actionObject(config.moonClanTele().getObjectID(), MenuAction.GAME_OBJECT_FIRST_OPTION);
+                    int obj = config.moonClanTele().getObjectID();
+                    if (config.moonClanTele() == AutoVorkiConfig.MoonClanTele.CUSTOM)
+                        obj = config.cMoonClanTele();
+                    actionObject(obj, MenuAction.GAME_OBJECT_FIRST_OPTION);
                     timeout = 5;
                     break;
                 case UNHANDLED:
