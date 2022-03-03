@@ -162,10 +162,8 @@ public class AutoVorki extends Plugin {
         IntStream stream = Arrays.stream(client.getMapRegions());
         List<Integer> regions = AutoVorki.regions;
         Objects.requireNonNull(regions);
-        IntStream intStream = stream;
-        List<Integer> obj = regions;
-        Objects.requireNonNull(obj);
-        return intStream.anyMatch(obj::contains);
+        Objects.requireNonNull(regions);
+        return stream.anyMatch(regions::contains);
     }
 
     private void reset() {
