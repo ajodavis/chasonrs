@@ -22,7 +22,6 @@ import java.util.Date;
 public class AutoVorkiOverlay extends OverlayPanel {
     private final AutoVorki plugin;
     private final AutoVorkiConfig config;
-    String format;
 
     @Inject
     private AutoVorkiOverlay(final AutoVorki plugin, final AutoVorkiConfig config) {

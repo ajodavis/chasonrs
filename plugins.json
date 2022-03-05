@@ -41,8 +41,24 @@
       {
         "date": "2022-03-05",
         "sha512sum": "",
-        "version": "1.0",
+        "version": "1.2",
         "url": "https://github.com/chasonrs/chasonrs/blob/main/release/autooffer-1.2.jar?raw=true",
+        "requires": "^1.0"
+      }
+    ]
+  },
+  {
+    "projectUrl": "",
+    "provider": "ChasOnRS",
+    "name": "AutoBasalt",
+    "description": "Automatically mines basalt and salt",
+    "id": "autobasalt-plugin",
+    "releases": [
+      {
+        "date": "2022-03-05",
+        "sha512sum": "",
+        "version": "1.0",
+        "url": "https://github.com/chasonrs/chasonrs/blob/main/release/autobasalt-1.0.jar?raw=true",
         "requires": "^1.0"
       }
     ]
