@@ -46,21 +46,5 @@
         "requires": "^1.0"
       }
     ]
-  },
-  {
-    "projectUrl": "",
-    "provider": "ChasOnRS",
-    "name": "AutoVorki",
-    "description": "Kills and loots Vorkath, and rebanks at Moonclan",
-    "id": "autovorki-plugin",
-    "releases": [
-      {
-        "date": "2022-03-05",
-        "sha512sum": "38302858AAD42F1C7A985C61DCAC95CA2C24FB9E170214DA3A7C99EAC87570798A4A628EBB5569C9333A7014DD0D22DBA13771FBA3B48078C2CC2A65523F11FA",
-        "version": "2.3",
-        "url": "https://github.com/chasonrs/chasonrs/blob/master/release/autovorki-2.3.jar?raw=true",
-        "requires": "^1.0"
-      }
-    ]
   }
 ]
