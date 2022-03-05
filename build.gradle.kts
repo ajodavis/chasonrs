@@ -104,14 +104,14 @@ subprojects {
             from(configurations["runtimeClasspath"])
         }
 
-        withType<Jar> {
+        /*withType<Jar> {
             doLast {
                 copy {
                     from("./build/libs/")
                     into("../release/")
                 }
             }
-        }
+        }*/
 
         withType<AbstractArchiveTask> {
             isPreserveFileTimestamps = false
