@@ -3,6 +3,8 @@ package net.runelite.client.plugins.autobasalt;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.callback.ClientThread;
@@ -143,12 +145,16 @@ public class AutoBasalt extends Plugin
 		player = client.getLocalPlayer();
 		if (player != null && client != null) {
 			state = getState();
-			lastState = state;
+			if (config.debug() && state != lastState && state != PluginState.TIMEOUT) {
+				utils.sendGameMessage("AutoVorkiState: " + state.toString());
+			}
+			if (state != PluginState.TIMEOUT)
+				lastState = state;
 			if (player.isMoving())
 				return;
 			switch (state) {
 				case TIMEOUT:
-					if (timeout >= 0)
+					if (timeout <= 0)
 						timeout = 0;
 					else
 						timeout--;
@@ -156,10 +162,8 @@ public class AutoBasalt extends Plugin
 				case MINE:
 					if (player.getAnimation() != -1)
 						break;
-					if (config.debug())
-						utils.sendGameMessage("click rock");
 					actionObject(config.mine().getObjectId(), MenuAction.GAME_OBJECT_FIRST_OPTION);
-					timeout = calc.getRandomIntBetweenRange(2, 6);
+					timeout = calc.getRandomIntBetweenRange(6, 10);
 					break;
 				case ASCEND_STAIRS:
 					actionObject(ascStairs, MenuAction.GAME_OBJECT_FIRST_OPTION);
@@ -189,6 +193,10 @@ public class AutoBasalt extends Plugin
 		if (timeout > 0 || player.isMoving())
 			return PluginState.TIMEOUT;
 		if (inRegion(client, mineRegion)) {
+			if (player.getWorldLocation().equals(new WorldPoint(2845, 10351, 0))) {
+				walk.sceneWalk(new WorldPoint(player.getWorldLocation().getX(), player.getWorldLocation().getY() - 10, 0), 2, 0);
+				return PluginState.TIMEOUT;
+			}
 			if (config.mine() == PluginConfig.Mine.BASALT) {
 				if (!inventory.isFull())
 					return PluginState.MINE;
@@ -235,6 +243,16 @@ public class AutoBasalt extends Plugin
 
 		targetMenu = new LegacyMenuEntry("Use", "", npc.getIndex(), MenuAction.ITEM_USE_ON_NPC, 0, 0, false);
 		utils.doModifiedActionMsTime(targetMenu, item.getId(), item.getIndex(), MenuAction.ITEM_USE_ON_NPC.getId(), npc.getConvexHull().getBounds(), calc.getRandomIntBetweenRange(25, 200));
+	}
+
+	void itemOnItem(int id1, int id2) {
+		WidgetItem item1 = inventory.getWidgetItem(id1);
+		WidgetItem item2 = inventory.getWidgetItem(id2);
+		if (item1 == null || item2 == null)
+			return;
+
+		targetMenu = new LegacyMenuEntry("Use", "", item2.getIndex(), MenuAction.ITEM_USE_ON_WIDGET_ITEM, 0, 0, false);
+		utils.doModifiedActionMsTime(targetMenu, item1.getId(), item1.getIndex(), MenuAction.ITEM_USE_ON_WIDGET_ITEM.getId(), item2.getCanvasBounds().getBounds(), calc.getRandomIntBetweenRange(25, 200));
 	}
 
 	void actionObject(int id, MenuAction action) {
