@@ -1,0 +1,18 @@
+[
+  {
+    "projectUrl": "",
+    "provider": "ChasOnRS",
+    "name": "AutoVorki",
+    "description": "Kills and loots Vorkath with melee",
+    "id": "autovorki-plugin",
+    "releases": [
+      {
+        "date": "2022-03-05",
+        "sha512sum": "",
+        "version": "2.3",
+        "url": "https://github.com/chasonrs/chasonrs/tree/main/release/autovorki-2.3.jar?raw=true",
+        "requires": "^1.0.0"
+      }
+    ]
+  }
+]

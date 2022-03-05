@@ -322,7 +322,7 @@ public class AutoVorki extends Plugin {
             if (config.useStaff() && inv.containsItem(config.staffID()))
                 actionItem(config.staffID(), MenuAction.ITEM_SECOND_OPTION);
             startLoc = new LocalPoint(vorkath.getLocalLocation().getX(), vorkath.getLocalLocation().getY() - (4 * 128));
-            if (config.invokes())
+            if (config.invokeWalk())
                 walk.walkTile(startLoc.getSceneX(), startLoc.getSceneY());
             else
                 walk.sceneWalk(startLoc, 0, 0);
@@ -573,10 +573,10 @@ public class AutoVorki extends Plugin {
                         actionItem(ItemID.BANDOS_GODSWORD, MenuAction.ITEM_SECOND_OPTION);
                     else {
                         targetMenu = new LegacyMenuEntry("<col=ff9040>Special Attack</col>", "", 1, MenuAction.CC_OP.getId(), -1, 38862884, false);
-                        if (!config.invokes())
-                            utils.doActionMsTime(targetMenu, bounds.getBounds(), calc.getRandomIntBetweenRange(25, 200));
-                        else
+                        if (config.invokes())
                             utils.doInvokeMsTime(targetMenu, 0);
+                        else
+                            utils.doActionMsTime(targetMenu, bounds.getBounds(), 0);
                         actionNPC(NpcID.VORKATH_8061, MenuAction.NPC_SECOND_OPTION); // 8061
                     }
                     break;
@@ -615,6 +615,8 @@ public class AutoVorki extends Plugin {
                                         drinkAntivenom();
                                     else if (needsRepot())
                                         drinkSuperCombat();
+                                }
+                                if (config.invokeWalk()) {
                                     walk.walkTile(safeX, startLoc.getSceneY() - 1);
                                 } else {
                                     walk.sceneWalk(new LocalPoint(safeX * 128, startLoc.getY() - 128), 0, 0);
@@ -640,12 +642,12 @@ public class AutoVorki extends Plugin {
                         utils.sendGameMessage("dodging bomb");
                     assert localLoc != null;
                     if (localLoc.getX() < 6208) {
-                        if (config.invokes())
+                        if (config.invokeWalk())
                             walk.walkTile(localLoc.getSceneX() + 2, localLoc.getSceneY());
                         else
                             walk.sceneWalk(new LocalPoint(localLoc.getX() + 256, localLoc.getY()), 0, 0);
                     } else {
-                        if (config.invokes())
+                        if (config.invokeWalk())
                             walk.walkTile(localLoc.getSceneX() - 2, localLoc.getSceneY());
                         else
                             walk.sceneWalk(new LocalPoint(localLoc.getX() - 256, localLoc.getY()), 0, 0);
@@ -1060,7 +1062,7 @@ public class AutoVorki extends Plugin {
     private void walkToStart() {
         if (vorkath != null)
             startLoc = new LocalPoint(vorkath.getLocalLocation().getX(), vorkath.getLocalLocation().getY() - (4 * 128));
-        if (!config.invokes())
+        if (!config.invokeWalk())
             walk.sceneWalk(new LocalPoint(startLoc.getX(), startLoc.getY()), 0, 0);
         else
             walk.walkTile(startLoc.getSceneX(), startLoc.getSceneY());
@@ -1188,6 +1190,6 @@ public class AutoVorki extends Plugin {
     }
 
     private boolean actionNPC(int id, MenuAction action) {
-        return actionNPC(id, action, 150);
+        return actionNPC(id, action, 0);
     }
 }

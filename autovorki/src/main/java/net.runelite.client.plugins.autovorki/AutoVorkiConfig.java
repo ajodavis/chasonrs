@@ -163,7 +163,12 @@ public interface AutoVorkiConfig extends Config {
         return false;
     }
 
-    @ConfigItem(keyName = "debug", name = "Debug Messages", description = "", position = 999)
+    @ConfigItem(keyName = "invokeWalk", name = "Invoke walking", description = "Use at your own risk :)", position = 999)
+    default boolean invokeWalk() {
+        return false;
+    }
+
+    @ConfigItem(keyName = "debug", name = "Debug Messages", description = "", position = 1000)
     default boolean debug() {
         return false;
     }
