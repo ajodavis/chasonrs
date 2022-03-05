@@ -10,8 +10,40 @@
         "date": "2022-03-05",
         "sha512sum": "",
         "version": "2.3",
-        "url": "https://github.com/chasonrs/chasonrs/tree/main/release/autovorki-2.3.jar?raw=true",
-        "requires": "^1.0.0"
+        "url": "https://github.com/chasonrs/chasonrs/blob/main/release/autovorki-2.3.jar?raw=true",
+        "requires": "^1.0"
+      }
+    ]
+  },
+  {
+    "projectUrl": "",
+    "provider": "ChasOnRS",
+    "name": "AutoOffer",
+    "description": "Automatically casts sinister/demonic offering",
+    "id": "autooffer-plugin",
+    "releases": [
+      {
+        "date": "2022-03-05",
+        "sha512sum": "",
+        "version": "1.2",
+        "url": "https://github.com/chasonrs/chasonrs/blob/main/release/autooffer-1.2.jar?raw=true",
+        "requires": "^1.0"
+      }
+    ]
+  },
+  {
+    "projectUrl": "",
+    "provider": "ChasOnRS",
+    "name": "AutoContinue",
+    "description": "Automatically continues through dialogue",
+    "id": "autocontinue-plugin",
+    "releases": [
+      {
+        "date": "2022-03-05",
+        "sha512sum": "",
+        "version": "1.0",
+        "url": "https://github.com/chasonrs/chasonrs/blob/main/release/autooffer-1.2.jar?raw=true",
+        "requires": "^1.0"
       }
     ]
   }
