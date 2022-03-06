@@ -3,7 +3,6 @@ package net.runelite.client.plugins.autobasalt;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
 import net.runelite.api.widgets.WidgetItem;
@@ -15,6 +14,7 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.iutils.*;
 import net.runelite.client.plugins.iutils.game.Game;
+import net.runelite.client.plugins.iutils.game.InventoryItem;
 import net.runelite.client.plugins.iutils.ui.Chatbox;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.pf4j.Extension;
@@ -160,10 +160,11 @@ public class AutoBasalt extends Plugin
 						timeout--;
 					break;
 				case MINE:
-					if (player.getAnimation() != -1)
-						break;
-					actionObject(config.mine().getObjectId(), MenuAction.GAME_OBJECT_FIRST_OPTION);
 					timeout = calc.getRandomIntBetweenRange(6, 10);
+					if (player.getAnimation() != -1) {
+						break;
+					}
+					actionObject(config.mine().getObjectId(), MenuAction.GAME_OBJECT_FIRST_OPTION);
 					break;
 				case ASCEND_STAIRS:
 					actionObject(ascStairs, MenuAction.GAME_OBJECT_FIRST_OPTION);
@@ -182,6 +183,20 @@ public class AutoBasalt extends Plugin
 						reset();
 					}
 					break;
+				case USE_ITEMS:
+					itemOnItem(ItemID.BASALT, ItemID.TE_SALT);
+					timeout = calc.getRandomIntBetweenRange(2, 4);
+					break;
+				case MAKE_TELES:
+					if (inventory.getItemCount(ItemID.EFH_SALT, true) >= 3
+							&& inventory.getItemCount(ItemID.URT_SALT, true) >= 3) {
+						targetMenu = new LegacyMenuEntry("Make", "", 1, MenuAction.CC_OP, -1, client.getWidget(270, config.craftTele() == PluginConfig.CraftTele.ICY_BASALT ? 14 : 15).getId(), false);
+						utils.doActionMsTime(targetMenu, client.getWidget(270, config.craftTele() == PluginConfig.CraftTele.ICY_BASALT ? 14 : 15).getBounds(), calc.getRandomIntBetweenRange(25, 200));
+					} else {
+						targetMenu = new LegacyMenuEntry("Make", "", 1, MenuAction.CC_OP, -1, client.getWidget(270, 14).getId(), false);
+						utils.doActionMsTime(targetMenu, client.getWidget(270, 14).getBounds(), calc.getRandomIntBetweenRange(25, 200));
+					}
+					break;
 				default:
 					timeout = 1;
 					break;
@@ -194,7 +209,7 @@ public class AutoBasalt extends Plugin
 			return PluginState.TIMEOUT;
 		if (inRegion(client, mineRegion)) {
 			if (player.getWorldLocation().equals(new WorldPoint(2845, 10351, 0))) {
-				walk.sceneWalk(new WorldPoint(player.getWorldLocation().getX(), player.getWorldLocation().getY() - 10, 0), 2, 0);
+				walk.sceneWalk(new WorldPoint(player.getWorldLocation().getX(), player.getWorldLocation().getY() - 10, 0), 5, 0);
 				return PluginState.TIMEOUT;
 			}
 			if (config.mine() == PluginConfig.Mine.BASALT) {
@@ -203,7 +218,23 @@ public class AutoBasalt extends Plugin
 				else {
 					if (!config.makeTele())
 						return PluginState.ASCEND_STAIRS;
+					else {
+						if (chat.chatState() == Chatbox.ChatState.MAKE) {
+							return PluginState.MAKE_TELES;
+						} else {
+							if (inventory.getItemCount(ItemID.BASALT, false) >= 1
+									&& inventory.getItemCount(ItemID.TE_SALT, true) >= 1
+									&& inventory.getItemCount((config.craftTele() == PluginConfig.CraftTele.ICY_BASALT ? ItemID.EFH_SALT : ItemID.URT_SALT), true) >= 3) {
+								return PluginState.USE_ITEMS;
+							} else {
+								utils.sendGameMessage("You do not have the materials to make this item.");
+								reset();
+							}
+						}
+					}
 				}
+			} else {
+				return PluginState.MINE;
 			}
 		} else if (inRegion(client, weissRegion)) {
 			if (config.mine() == PluginConfig.Mine.BASALT) {
@@ -246,13 +277,6 @@ public class AutoBasalt extends Plugin
 	}
 
 	void itemOnItem(int id1, int id2) {
-		WidgetItem item1 = inventory.getWidgetItem(id1);
-		WidgetItem item2 = inventory.getWidgetItem(id2);
-		if (item1 == null || item2 == null)
-			return;
-
-		targetMenu = new LegacyMenuEntry("Use", "", item2.getIndex(), MenuAction.ITEM_USE_ON_WIDGET_ITEM, 0, 0, false);
-		utils.doModifiedActionMsTime(targetMenu, item1.getId(), item1.getIndex(), MenuAction.ITEM_USE_ON_WIDGET_ITEM.getId(), item2.getCanvasBounds().getBounds(), calc.getRandomIntBetweenRange(25, 200));
 	}
 
 	void actionObject(int id, MenuAction action) {
