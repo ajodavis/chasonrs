@@ -146,7 +146,7 @@ public class AutoBasalt extends Plugin
 		if (player != null && client != null) {
 			state = getState();
 			if (config.debug() && state != lastState && state != PluginState.TIMEOUT) {
-				utils.sendGameMessage("AutoVorkiState: " + state.toString());
+				utils.sendGameMessage("AutoBasalt: " + state.toString());
 			}
 			if (state != PluginState.TIMEOUT)
 				lastState = state;

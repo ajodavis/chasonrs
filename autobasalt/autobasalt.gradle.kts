@@ -25,7 +25,7 @@ import ProjectVersions.openosrsVersion
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-version = "1.3"
+version = "1.3.1"
 
 project.extra["PluginName"] = "AutoBasalt" // This is the name that is used in the external plugin manager panel
 project.extra["PluginDescription"] = "Automatically mines basalt and salt" // This is the description that is used in the external plugin manager panel
