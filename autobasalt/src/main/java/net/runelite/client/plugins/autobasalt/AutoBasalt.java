@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -40,6 +41,8 @@ public class AutoBasalt extends Plugin
 	@Inject
 	private Client client;
 	@Inject
+	private Game game;
+	@Inject
 	private ClientThread clientThread;
 	@Inject
 	private iUtils utils;
@@ -65,7 +68,6 @@ public class AutoBasalt extends Plugin
 
 	private Player player;
 	private Rectangle bounds;
-	private Game game;
 	LegacyMenuEntry targetMenu;
 	PluginState state;
 	PluginState lastState;
@@ -164,7 +166,7 @@ public class AutoBasalt extends Plugin
 					if (player.getAnimation() != -1) {
 						break;
 					}
-					actionObject(config.mine().getObjectId(), MenuAction.GAME_OBJECT_FIRST_OPTION);
+					mine(config.mine().getObjectId());
 					break;
 				case ASCEND_STAIRS:
 					actionObject(ascStairs, MenuAction.GAME_OBJECT_FIRST_OPTION);
@@ -178,9 +180,6 @@ public class AutoBasalt extends Plugin
 					if (inventory.containsItem(ItemID.BASALT)) {
 						itemOnNPC(ItemID.BASALT, snowflake);
 						timeout = calc.getRandomIntBetweenRange(2, 4);
-					} else {
-						utils.sendGameMessage("no basalt in invent");
-						reset();
 					}
 					break;
 				case USE_ITEMS:
@@ -228,7 +227,8 @@ public class AutoBasalt extends Plugin
 								return PluginState.USE_ITEMS;
 							} else {
 								utils.sendGameMessage("You do not have the materials to make this item.");
-								reset();
+								shutDown();
+								return null;
 							}
 						}
 					}
@@ -242,6 +242,8 @@ public class AutoBasalt extends Plugin
 					return PluginState.NOTE_BASALT;
 				else
 					return PluginState.DESCEND_STAIRS;
+			} else {
+				return PluginState.DESCEND_STAIRS;
 			}
 		}
 		return PluginState.TIMEOUT;
@@ -277,6 +279,17 @@ public class AutoBasalt extends Plugin
 	}
 
 	void itemOnItem(int id1, int id2) {
+		WidgetItem item1 = inventory.getWidgetItem(id1);
+		WidgetItem item2 = inventory.getWidgetItem(id2);
+		if (item1 == null || item2 == null)
+			return;
+
+		client.setSelectedItemWidget(WidgetInfo.INVENTORY.getId());
+		client.setSelectedItemSlot(item1.getIndex());
+		client.setSelectedItemID(item1.getId());
+
+		client.invokeMenuAction("Use", "", item2.getId(), MenuAction.ITEM_USE_ON_WIDGET_ITEM.getId(), 2, WidgetInfo.INVENTORY.getId());
+
 	}
 
 	void actionObject(int id, MenuAction action) {
