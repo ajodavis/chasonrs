@@ -37,7 +37,7 @@ import static java.rmi.server.LogStream.log;
 @PluginDescriptor(
 		name = "AutoDodge",
 		description = "Automatically dodges AoE (area of attack)",
-		tags = {"chas", "basalt", "salt", "weiss", "mining", "mine", "miner"}
+		tags = {"chas", "aoe", "dodge", "demonic", "gorilla"}
 )
 @Slf4j
 public class AutoDodge extends Plugin
