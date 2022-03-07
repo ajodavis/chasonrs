@@ -148,7 +148,7 @@ public class AutoBasalt extends Plugin
 		if (player != null && client != null) {
 			state = getState();
 			if (config.debug() && state != lastState && state != PluginState.TIMEOUT) {
-				utils.sendGameMessage("AutoBasalt: " + state.toString());
+				utils.sendGameMessage(this.getClass().getName() + ": " + state.toString());
 			}
 			if (state != PluginState.TIMEOUT)
 				lastState = state;

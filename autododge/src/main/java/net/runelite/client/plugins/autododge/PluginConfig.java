@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Owain van Brakel <https:github.com/Owain94>
+ * Copyright (c) 2018, Andrew EP | ElPinche256 <https://github.com/ElPinche256>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.autododge;
 
-rootProject.name = "ChasOnRS"
+import lombok.Getter;
+import net.runelite.api.ItemID;
+import net.runelite.api.ObjectID;
+import net.runelite.client.config.*;
 
-include(":autovorki")
-include(":autocontinue")
-include(":autooffer")
-include(":autobasalt")
-include(":autododge")
+@ConfigGroup("AutoDodge")
+public interface PluginConfig extends Config
+{
+	@ConfigItem(keyName = "dodgeDemonics", name = "Demonic Gorillas", description = "Dodge Demonic Gorilla's AoE", position = 1)
+	default boolean dodgeDemonics() {
+		return true;
+	}
 
-for (project in rootProject.children) {
-    project.apply {
-        projectDir = file(name)
-        buildFileName = "$name.gradle.kts"
+	@ConfigItem(keyName = "testDemonics", name = "Test Demonics", description = "", position = 0, title = "testDemonics")
+	default Button testDemonics() {
+		return new Button();
+	}
 
-        require(projectDir.isDirectory) { "Project '${project.path} must have a $projectDir directory" }
-        require(buildFile.isFile) { "Project '${project.path} must have a $buildFile build script" }
-    }
+	@ConfigItem(keyName = "invokes", name = "Use invokes (use with caution)", description = "Potentially detected; use with caution", position = 998)
+	default boolean invokes() {
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "debug",
+		name = "Debug Messages",
+		description = "",
+		position = 999
+	)
+	default boolean debug() {
+		return false;
+	}
 }
