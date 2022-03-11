@@ -29,7 +29,6 @@ include(":autovorki")
 include(":autocontinue")
 include(":autooffer")
 include(":autobasalt")
-//include(":autododge")
 include(":autotrade")
 
 for (project in rootProject.children) {
