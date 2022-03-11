@@ -25,7 +25,7 @@ import ProjectVersions.openosrsVersion
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-version = "1.2.0"
+version = "1.2.1"
 
 project.extra["PluginName"] = "AutoContinue" // This is the name that is used in the external plugin manager panel
 project.extra["PluginDescription"] = "Automatically progress through dialogue" // This is the description that is used in the external plugin manager panel
@@ -36,7 +36,7 @@ dependencies {
 
     compileOnly("com.openosrs:runelite-api:$openosrsVersion+")
     compileOnly("com.openosrs:runelite-client:$openosrsVersion+")
-    compileOnly(group = "com.openosrs.externals", name = "iutils", version = "4.7.7+");
+    compileOnly(group = "com.openosrs.externals", name = "iutils", version = "4.8.5+");
     //compileOnly(project(":iutils"))
 
     compileOnly(Libraries.guice)

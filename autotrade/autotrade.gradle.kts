@@ -25,10 +25,10 @@ import ProjectVersions.openosrsVersion
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-version = "1.2.0"
+version = "1.2"
 
-project.extra["PluginName"] = "AutoDodge" // This is the name that is used in the external plugin manager panel
-project.extra["PluginDescription"] = "Automatically dodges AoE (area of attack)" // This is the description that is used in the external plugin manager panel
+project.extra["PluginName"] = "AutoTrade" // This is the name that is used in the external plugin manager panel
+project.extra["PluginDescription"] = "Automatically mules items" // This is the description that is used in the external plugin manager panel
 
 dependencies {
     annotationProcessor(Libraries.lombok)

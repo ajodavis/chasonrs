@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Owain van Brakel <https:github.com/Owain94>
+ * Copyright (c) 2018, Andrew EP | ElPinche256 <https://github.com/ElPinche256>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.autotrade;
 
-rootProject.name = "ChasOnRS"
+import net.runelite.api.ItemID;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-include(":autovorki")
-include(":autocontinue")
-include(":autooffer")
-include(":autobasalt")
-//include(":autododge")
-include(":autotrade")
+@ConfigGroup("AutoTradeConfig")
+public interface AutoTradeConfig extends Config
+{
+	@ConfigItem(
+		keyName = "showOverlay",
+		name = "Show UI",
+		description = "Show the UI on screen",
+		position = 0
+	)
+	default boolean showOverlay() {
+		return true;
+	}
 
-for (project in rootProject.children) {
-    project.apply {
-        projectDir = file(name)
-        buildFileName = "$name.gradle.kts"
+	@ConfigItem(
+			keyName = "playerName",
+			name = "Player Name",
+			description = "Player to trade",
+			position = 1
+	)
+	default String playerName() { return "Chas"; }
 
-        require(projectDir.isDirectory) { "Project '${project.path} must have a $projectDir directory" }
-        require(buildFile.isFile) { "Project '${project.path} must have a $buildFile build script" }
-    }
+	@ConfigItem(
+			keyName = "itemID",
+			name = "Item to trade",
+			description = "ID of the item to trade",
+			position = 2
+	)
+	default int itemID() { return ItemID.NATURE_RUNE; }
+
+	@ConfigItem(
+			keyName = "debug",
+			name = "Debug Messages",
+			description = "",
+			position = 3
+	)
+	default boolean debug() {
+		return true;
+	}
 }
